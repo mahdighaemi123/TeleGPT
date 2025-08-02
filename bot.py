@@ -73,9 +73,9 @@ class Storage:
                 return {}
         return {}
 
-    def save_memory(self):
+    def save_memory(self, data):
         with open(self.memory_path, "w", encoding="utf8") as f:
-            json.dump(self._data, f, indent=2)
+            json.dump(data, f, indent=2)
 
 
 class Memory:
@@ -92,7 +92,7 @@ class Memory:
         self._data[chat_id_str].append({"role": role, "message": message})
         # Keep last 100
         self._data[chat_id_str] = self._data[chat_id_str][-100:]
-        self.storage.save_memory()
+        self.storage.save_memory(self._data)
 
     def get_last_messages(self, chat_id: int, limit=10):
         return self._data.get(str(chat_id), [])[-limit:]
