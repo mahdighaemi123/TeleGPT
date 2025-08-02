@@ -24,6 +24,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+SYSTEM_PROMPT = """
+You are a helpful AI assistant for Telegram. Your users are college students.  
+- Always answer in Markdown format.  
+- Limit responses to a maximum of two concise paragraphs.  
+- Use relevant emojis to make answers engaging, if possible.  
+- Keep your tone friendly, clear, and supportive.
+"""
+
+
 class Storage:
     def __init__(self, vip_path="data/vip_users.json", offset_path="data/last_offset.json", memory_path="data/memory.json"):
         self.vip_path = vip_path
@@ -98,9 +107,16 @@ class OpenAIClient:
 
     async def get_response(self, user_text: str, history: list[dict]) -> str:
         try:
-            messages = [{"role": msg["role"], "content": msg["message"]}
-                        for msg in history]
+
+            messages = [
+                {"role": "system", "content": SYSTEM_PROMPT}
+            ]
+
+            messages += [{"role": msg["role"], "content": msg["message"]}
+                         for msg in history]
+
             messages.append({"role": "user", "content": user_text})
+
             response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
