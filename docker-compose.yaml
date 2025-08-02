@@ -1,0 +1,18 @@
+version: '3'
+name: telegpt
+
+services:
+
+  bot:
+    build: .
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - my_bridge
+    volumes:
+      - ./data:/app/data
+
+networks:
+  my_bridge:
+    driver: bridge
