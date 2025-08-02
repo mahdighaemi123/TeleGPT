@@ -82,10 +82,10 @@ docker compose down
 .
 ├── data/           # Persistent data: VIPs, memory, etc.
 ├── bot.py          # Main script
-├── Dockerfile/     # (If you have one; required for Docker builds)
+├── Dockerfile/     
 ├── docker-compose.yml
 ├── requirements.txt
-├── .env
+├── .env            # create and update this
 ├── .env.template
 └── README.md
 ```
